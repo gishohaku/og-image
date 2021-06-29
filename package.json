@@ -1,0 +1,24 @@
+{
+  "name": "og-image",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "npx functions-framework --target=handler",
+    "deploy": "gcloud functions deploy og-image --entry-point handler --trigger-http --allow-unauthenticated"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gishohaku/og-image.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gishohaku/og-image/issues"
+  },
+  "homepage": "https://github.com/gishohaku/og-image#readme",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.9.0"
+  }
+}
