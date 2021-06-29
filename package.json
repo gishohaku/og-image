@@ -5,11 +5,15 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "npx functions-framework --target=handler",
+    "dev:watch": "npm-watch dev",
     "deploy": "gcloud functions deploy og-image --entry-point handler --trigger-http --allow-unauthenticated"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gishohaku/og-image.git"
+  },
+  "watch": {
+    "dev": "src/*.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +23,7 @@
   },
   "homepage": "https://github.com/gishohaku/og-image#readme",
   "devDependencies": {
-    "@google-cloud/functions-framework": "^1.9.0"
+    "@google-cloud/functions-framework": "^1.9.0",
+    "npm-watch": "^0.10.0"
   }
 }
