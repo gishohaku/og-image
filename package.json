@@ -25,5 +25,8 @@
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.9.0",
     "npm-watch": "^0.10.0"
+  },
+  "dependencies": {
+    "puppeteer-core": "^10.1.0"
   }
 }
