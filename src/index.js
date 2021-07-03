@@ -1,4 +1,5 @@
 const chromium = require("chrome-aws-lambda");
+const { getHtml } = require("./template");
 
 const capture = async (html) => {
   // FIXME: Support other OS
@@ -26,7 +27,11 @@ const capture = async (html) => {
 };
 
 exports.handler = async (req, res) => {
-  const html = "<h1>Hello World!</h1>";
+  const props = {
+    circle: "モウフカブール",
+    name: "明後日から使えるKubernetes入門（新刊）",
+  };
+  const html = getHtml(props);
   const file = await capture(html);
 
   res.statusCode = 200;
@@ -36,4 +41,15 @@ exports.handler = async (req, res) => {
     `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`
   );
   res.end(file);
+};
+
+exports.html = async (req, res) => {
+  const props = {
+    circle: "モウフカブール",
+    name: "明後日から使えるKubernetes入門（新刊）",
+  };
+  const html = getHtml(props);
+
+  res.statusCode = 200;
+  res.end(html);
 };
