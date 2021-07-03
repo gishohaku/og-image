@@ -1,3 +1,4 @@
+const express = require('express')
 const chromium = require("chrome-aws-lambda");
 const { getHtml } = require("./template");
 const { getData } = require("./data");
@@ -27,8 +28,9 @@ const capture = async (html) => {
   return file;
 };
 
-exports.handler = async (req, res) => {
-  const bookId = "acsxsD0Xh6Tz6RN1LQ44";
+const app = express();
+app.use('/books/:id', async (req, res) => {
+  const bookId = req.params.id
   const data = await getData(bookId);
   const {
     circle: { name: circleName },
@@ -48,7 +50,12 @@ exports.handler = async (req, res) => {
     `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`
   );
   res.end(file);
-};
+});
+app.use((req, res) => {
+  res.end('hello world')
+});
+
+exports.handler = app
 
 exports.html = async (req, res) => {
   const props = {
