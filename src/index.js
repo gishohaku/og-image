@@ -1,5 +1,6 @@
 const chromium = require("chrome-aws-lambda");
 const { getHtml } = require("./template");
+const { getData } = require("./data");
 
 const capture = async (html) => {
   // FIXME: Support other OS
@@ -27,9 +28,15 @@ const capture = async (html) => {
 };
 
 exports.handler = async (req, res) => {
+  const bookId = "acsxsD0Xh6Tz6RN1LQ44";
+  const data = await getData(bookId);
+  const {
+    circle: { name: circleName },
+    title,
+  } = data;
   const props = {
-    circle: "モウフカブール",
-    name: "明後日から使えるKubernetes入門（新刊）",
+    circle: circleName,
+    name: title,
   };
   const html = getHtml(props);
   const file = await capture(html);
