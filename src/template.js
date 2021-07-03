@@ -287,7 +287,8 @@ summary {
 `;
 
 const getHtml = (props) => {
-  const { circle, name } = props;
+  const { circle, name, image } = props;
+  console.log(props);
   return `<html>
     <head>
       <meta charset="UTF-8" />
@@ -319,7 +320,7 @@ const getHtml = (props) => {
         }
       </style>
       <div class="flex bg-white" style="border-radius: 10px; height: calc(100% - 64px); margin: 32px; padding: 32px;">
-        <img src="https://firebasestorage.googleapis.com/v0/b/gishohaku.appspot.com/o/uploads%2FrCyw1pPOqeVfuqnP3hlG9sjlmH42%2F1622393149105?alt=media&token=e97b210f-e8f4-467e-9e5b-71599e8fcd25"/>
+        ${!!image ? `<img src="${image}"/>` : ""}
         <div class="flex relative w-full" style="flex-direction: column; margin-left: 32px; justify-content: center;">
           <!-- TODO: 新刊ラベル -->
           <div style="margin-top: -16px;">

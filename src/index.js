@@ -28,6 +28,12 @@ const capture = async (html) => {
   return file;
 };
 
+const firebaseOrigin = "firebasestorage.googleapis.com";
+const imageFluxOrigin = "p1-743c57d4.imageflux.jp";
+const replaceImageUrl = (url) => {
+  return url.replace(firebaseOrigin, imageFluxOrigin);
+};
+
 const app = express();
 app.use('/books/:id', async (req, res) => {
   const bookId = req.params.id
@@ -35,10 +41,13 @@ app.use('/books/:id', async (req, res) => {
   const {
     circle: { name: circleName },
     title,
+    images,
   } = data;
+  console.log(images[0]);
   const props = {
     circle: circleName,
     name: title,
+    image: !!images[0] ? replaceImageUrl(images[0]) : null,
   };
   const html = getHtml(props);
   const file = await capture(html);
