@@ -35,8 +35,8 @@ const replaceImageUrl = (url) => {
 };
 
 const app = express();
-app.use('/books/:id', async (req, res) => {
-  const bookId = req.params.id
+app.use(`/books/:id\.:ext?`, async (req, res) => {
+  const bookId = req.params.id;
   const data = await getData(bookId);
   const {
     circle: { name: circleName },
@@ -54,9 +54,11 @@ app.use('/books/:id', async (req, res) => {
 
   res.statusCode = 200;
   res.setHeader("Content-Type", `image/png`);
+  /* 31536000 */
+  const maxAge = 60 * 30;
   res.setHeader(
     "Cache-Control",
-    `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`
+    `public, immutable, no-transform, s-maxage=${maxAge}, max-age=${maxAge}`
   );
   res.end(file);
 });
