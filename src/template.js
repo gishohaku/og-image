@@ -292,10 +292,16 @@ const getHtml = (props) => {
   return `<html>
     <head>
       <meta charset="UTF-8" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700" rel="stylesheet">
     </head>
     <body class="bg-green" style="font-feature-settings: 'palt';">
       <style>
         ${modernNormalize}
+        body {
+          font-family: 'Noto Sans JP', sans-serif;
+        }
         :root {
           --green: #3FBD92;
           --blue: #328BB6;
@@ -320,7 +326,7 @@ const getHtml = (props) => {
         }
       </style>
       <div class="flex bg-white" style="border-radius: 10px; height: calc(100% - 64px); margin: 32px; padding: 32px;">
-        ${!!image ? `<img src="${image}"/>` : ""}
+        ${!!image ? `<img style="object-fit: contain;" src="${image}"/>` : ""}
         <div class="flex relative w-full" style="flex-direction: column; margin-left: 32px; justify-content: center;">
           <!-- TODO: 新刊ラベル -->
           <div style="margin-top: -16px;">
