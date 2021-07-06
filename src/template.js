@@ -288,7 +288,6 @@ summary {
 
 const getHtml = (props) => {
   const { circle, name, image } = props;
-  console.log(props);
   return `<html>
     <head>
       <meta charset="UTF-8" />

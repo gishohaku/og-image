@@ -43,22 +43,28 @@ app.use(`/books/:id\.:ext?`, async (req, res) => {
     title,
     images,
   } = data;
-  console.log(images[0]);
   const props = {
     circle: circleName,
     name: title,
     image: !!images[0] ? replaceImageUrl(images[0]) : null,
   };
   const html = getHtml(props);
+
+  if (req.params.ext === "html") {
+    res.statusCode = 200;
+    res.end(html);
+    return;
+  }
+
   const file = await capture(html);
 
   res.statusCode = 200;
   res.setHeader("Content-Type", `image/png`);
   /* 31536000 */
-  const maxAge = 60 * 30;
+  const maxAge = 60 * 60 * 12;
   res.setHeader(
     "Cache-Control",
-    `public, immutable, no-transform, s-maxage=${maxAge}, max-age=${maxAge}`
+    `public, s-maxage=${maxAge}, max-age=${maxAge}`
   );
   res.end(file);
 });
@@ -66,15 +72,4 @@ app.use((req, res) => {
   res.end('hello world')
 });
 
-exports.handler = app
-
-exports.html = async (req, res) => {
-  const props = {
-    circle: "モウフカブール",
-    name: "明後日から使えるKubernetes入門（新刊）",
-  };
-  const html = getHtml(props);
-
-  res.statusCode = 200;
-  res.end(html);
-};
+exports.handler = app;
