@@ -1,7 +1,32 @@
 const express = require('express')
 const chromium = require("chrome-aws-lambda");
+const { tokenize } = require("kuromojin");
 const { getHtml } = require("./template");
 const { getData } = require("./data");
+
+const getTextNodes = async (text) => {
+  const tokens = await tokenize(text);
+  const results = [];
+  let words = "";
+  tokens.map((token) => {
+    if (token.pos_detail_1 === "括弧閉") {
+      words += token.surface_form;
+      results.push(words);
+      words = "";
+      return;
+    }
+    if (
+      words.length > 2 &&
+      (token.pos === "名詞" || token.pos_detail_1 === "括弧開")
+    ) {
+      results.push(words);
+      words = "";
+    }
+    words += token.surface_form;
+  });
+  if (words.length > 0) results.push(words);
+  return results;
+};
 
 const capture = async (html) => {
   // FIXME: Support other OS
@@ -45,7 +70,7 @@ app.use(`/books/:id\.:ext?`, async (req, res) => {
   } = data;
   const props = {
     circle: circleName,
-    name: title,
+    name: await getTextNodes(title),
     image: !!images[0] ? replaceImageUrl(images[0]) : null,
   };
   const html = getHtml(props);
