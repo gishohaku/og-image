@@ -4,10 +4,51 @@ const { tokenize } = require("kuromojin");
 const { getHtml } = require("./template");
 const { getData } = require("./data");
 
+const splitSentence = (tokens) => {
+  const result = [];
+  const last = tokens.reduce((values, current) => {
+    const lastValue = values[values.length - 1];
+    if (lastValue) {
+      if (
+        current.pos === "記号" &&
+        ["読点", "句点", "一般"].includes(current.pos_detail_1)
+      ) {
+        result.push(lastValue.surface_form + current.surface_form);
+        return [];
+      } else if (lastValue.pos_detail_1 === "括弧開") {
+        result.push(lastValue.surface_form + current.surface_form);
+        return [];
+      } else if (
+        ["名詞", "動詞"].includes(lastValue.pos) &&
+        current.pos === "助詞"
+      ) {
+        result.push(lastValue.surface_form + current.surface_form);
+        return [];
+      } else if (lastValue.pos === "動詞" && current.pos === "助動詞") {
+        result.push(lastValue.surface_form + current.surface_form);
+        return [];
+      }
+      result.push(lastValue.surface_form);
+      return [current];
+    }
+
+    if (["読点", "句点"].includes(current.pos_detail_1)) {
+      result[result.length - 1] =
+        result[result.length - 1] + current.surface_form;
+      return [];
+    }
+
+    return [current];
+  }, []);
+  if (last[0]) result.push(last[0].surface_form);
+  return result;
+};
+
 const getTextNodes = async (text) => {
   const tokens = await tokenize(text);
   const results = [];
   let words = "";
+  return splitSentence(tokens);
   tokens.map((token) => {
     if (token.pos_detail_1 === "括弧閉") {
       words += token.surface_form;
@@ -40,8 +81,12 @@ const capture = async (html) => {
           ignoreHTTPSErrors: true,
         }
       : {
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
           executablePath:
             "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          headless: true,
+          ignoreHTTPSErrors: true,
         }
   );
   const page = await browser.newPage();
