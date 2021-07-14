@@ -71,6 +71,9 @@ const getTextNodes = async (text) => {
 
 const capture = async (html) => {
   // FIXME: Support other OS
+  await chromium.font(
+    "https://rawcdn.githack.com/googlefonts/noto-cjk/cee7438f5f8e66397090d483c15275d1af3d87c7/Sans/OTF/Japanese/NotoSansCJKjp-Bold.otf"
+  );
   const browser = await chromium.puppeteer.launch(
     process.env.NODE_ENV === "production"
       ? {

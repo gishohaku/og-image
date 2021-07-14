@@ -291,15 +291,12 @@ const getHtml = (props) => {
   return `<html>
     <head>
       <meta charset="UTF-8" />
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700" rel="stylesheet">
     </head>
     <body class="bg-green" style="font-feature-settings: 'palt';">
       <style>
         ${modernNormalize}
         body {
-          font-family: 'Noto Sans JP', sans-serif;
+          font-family: 'Noto Sans CJK JP', sans-serif;
         }
         :root {
           --green: #3FBD92;
